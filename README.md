@@ -1,0 +1,1 @@
+# php-cpu-core-detection
