@@ -4,6 +4,8 @@ namespace WyriHaximus\CpuCoreDetector;
 
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
+use WyriHaximus\CpuCoreDetector\Core\Count\Nproc;
+use WyriHaximus\CpuCoreDetector\Detector\Hash;
 
 class Detector
 {
@@ -28,6 +30,9 @@ class Detector
 
     public static function detectAsync(LoopInterface $loop)
     {
-
+        $nproc = new Nproc($loop);
+        return (new Hash($loop))->execute($nproc->getCommandName())->then(function () use ($nproc) {
+            return $nproc->execute();
+        });
     }
 }
