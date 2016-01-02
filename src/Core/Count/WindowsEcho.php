@@ -13,7 +13,8 @@ use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 class WindowsEcho implements CountInterface
 {
     /**
-     * @return array
+     * @param Detector|null $detector
+     * @return bool
      */
     public static function supportsCurrentOS(Detector $detector = null)
     {
@@ -50,26 +51,12 @@ class WindowsEcho implements CountInterface
      */
     public function execute()
     {
-        $deferred = new Deferred();
-        $buffer = '';
-
-        $process = new Process('echo %NUMBER_OF_PROCESSORS%');
-        $process->on('exit', function ($exitCode) use ($deferred, &$buffer) {
-            if ($exitCode == 0) {
-                $deferred->resolve($buffer);
-                return;
+        return \WyriHaximus\React\childProcessPromise($this->loop, new Process('echo %NUMBER_OF_PROCESSORS%'))->then(function ($result) {
+            if ($result['exitCode'] == 0) {
+                return \React\Promise\resolve((int) trim($result['buffers']['stdout']));
             }
 
-            $deferred->reject();
+            return \React\Promise\reject();
         });
-
-        \WyriHaximus\React\futurePromise($this->loop, $process)->then(function (Process $process) use (&$buffer) {
-            $process->start($this->loop);
-            $process->stdout->on('data', function ($output) use (&$buffer) {
-                $buffer += $output;
-            });
-        });
-
-        return $deferred->promise();
     }
 }
