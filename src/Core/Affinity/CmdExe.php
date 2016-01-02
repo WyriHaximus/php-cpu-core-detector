@@ -4,13 +4,13 @@ namespace WyriHaximus\CpuCoreDetector\Core\Affinity;
 
 use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
-use WyriHaximus\React\ChildProcess\Pool\Os;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 
 class CmdExe implements AffinityInterface
 {
     /**
-     * @return array
+     * @param Detector|null $detector
+     * @return bool
      */
     public static function supportsCurrentOS(Detector $detector = null)
     {
