@@ -51,6 +51,11 @@ before_script:
 ## Run the actual test
 script: make travis
 
+## Run examples after tests
+after_script:
+  - php examples/sync.php
+  - php examples/ssync.php
+
 ## Gather coverage and set it to coverage servers
 after_script: make travis-coverage
 
