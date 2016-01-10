@@ -51,7 +51,10 @@ class WindowsEcho implements CountInterface
      */
     public function execute()
     {
-        return \WyriHaximus\React\childProcessPromise($this->loop, new Process('echo %NUMBER_OF_PROCESSORS%'))->then(function ($result) {
+        return \WyriHaximus\React\childProcessPromise(
+            $this->loop,
+            new Process('echo %NUMBER_OF_PROCESSORS%')
+        )->then(function ($result) {
             if ($result['exitCode'] == 0) {
                 return \React\Promise\resolve((int) trim($result['buffers']['stdout']));
             }
