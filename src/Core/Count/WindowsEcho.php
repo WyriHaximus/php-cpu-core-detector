@@ -9,6 +9,7 @@ use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
 use WyriHaximus\React\ChildProcess\Pool\Os;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
+use WyriHaximus\React\ProcessOutcome;
 
 class WindowsEcho implements CountInterface
 {
@@ -54,9 +55,9 @@ class WindowsEcho implements CountInterface
         return \WyriHaximus\React\childProcessPromise(
             $this->loop,
             new Process('echo %NUMBER_OF_PROCESSORS%')
-        )->then(function ($result) {
-            if ($result['exitCode'] == 0) {
-                return \React\Promise\resolve((int) trim($result['buffers']['stdout']));
+        )->then(function (ProcessOutcome $outcome) {
+            if ($outcome->getExitCode() == 0) {
+                return \React\Promise\resolve((int) trim($outcome->getStdout()));
             }
 
             return \React\Promise\reject();

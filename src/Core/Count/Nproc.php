@@ -9,6 +9,7 @@ use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
 use WyriHaximus\React\ChildProcess\Pool\Os;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
+use WyriHaximus\React\ProcessOutcome;
 
 class Nproc implements CountInterface
 {
@@ -50,9 +51,12 @@ class Nproc implements CountInterface
      */
     public function execute()
     {
-        return \WyriHaximus\React\childProcessPromise($this->loop, new Process('nproc'))->then(function ($result) {
-            if ($result['exitCode'] == 0) {
-                return \React\Promise\resolve((int) trim($result['buffers']['stdout']));
+        return \WyriHaximus\React\childProcessPromise(
+            $this->loop,
+            new Process('nproc')
+        )->then(function (ProcessOutcome $outcome) {
+            if ($outcome->getExitCode() == 0) {
+                return \React\Promise\resolve((int) trim($outcome->getStdout()));
             }
 
             return \React\Promise\reject();

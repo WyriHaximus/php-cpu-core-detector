@@ -7,6 +7,7 @@ use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
 use WyriHaximus\CpuCoreDetector\DetectorInterface;
+use WyriHaximus\React\ProcessOutcome;
 
 class Hash implements DetectorInterface
 {
@@ -44,8 +45,8 @@ class Hash implements DetectorInterface
         return \WyriHaximus\React\childProcessPromise(
             $this->loop,
             new Process('hash ' . $program)
-        )->then(function ($result) {
-            if ($result['exitCode'] == 0) {
+        )->then(function (ProcessOutcome $outcome) {
+            if ($outcome->getExitCode() == 0) {
                 return \React\Promise\resolve();
             }
 
