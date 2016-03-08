@@ -11,7 +11,7 @@ interface StrategyInterface
      * @param OSDetector|null $detector
      * @return bool
      */
-    public static function supportsCurrentOS(OSDetector $detector = null);
+    public function supportsCurrentOS(OSDetector $detector = null);
 
     /**
      * @return PromiseInterface
