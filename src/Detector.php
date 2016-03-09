@@ -4,12 +4,11 @@ namespace WyriHaximus\CpuCoreDetector;
 
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
-use WyriHaximus\CpuCoreDetector\Core\Count\Nproc;
-use WyriHaximus\CpuCoreDetector\Detector\Hash;
+use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 
 class Detector
 {
-    public static function detect()
+    public static function detect(Collections $collections = null)
     {
         $return = null;
         $loop = Factory::create();
@@ -17,7 +16,7 @@ class Detector
         $assign = function ($value) use (&$return) {
             $return = $value;
         };
-        static::detectAsync($loop)->then($assign, $assign);
+        static::detectAsync($loop, $collections)->then($assign, $assign);
 
         $loop->run();
 
@@ -28,11 +27,16 @@ class Detector
         return $return;
     }
 
-    public static function detectAsync(LoopInterface $loop)
+    public static function detectAsync(LoopInterface $loop, Collections $collections = null)
     {
-        $nproc = new Nproc($loop);
-        return (new Hash($loop))->execute($nproc->getCommandName())->then(function () use ($nproc) {
-            return $nproc->execute();
+        if ($collections === null) {
+            $collections = getDefaultCollections($loop);
+        }
+
+        return $collections->getDetectors()->execute(
+            $collections->getCounters()
+        )->then(function (CountInterface $counter) {
+            return $counter->execute();
         });
     }
 }

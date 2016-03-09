@@ -12,7 +12,7 @@ class CmdExe implements AffinityInterface
      * @param Detector|null $detector
      * @return bool
      */
-    public static function supportsCurrentOS(Detector $detector = null)
+    public function supportsCurrentOS(Detector $detector = null)
     {
         if ($detector === null) {
             $detector = new Detector();

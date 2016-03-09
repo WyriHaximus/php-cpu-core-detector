@@ -4,10 +4,8 @@ namespace WyriHaximus\CpuCoreDetector\Core\Count;
 
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
-use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
-use WyriHaximus\React\ChildProcess\Pool\Os;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\React\ProcessOutcome;
 
@@ -17,7 +15,7 @@ class WindowsEcho implements CountInterface
      * @param Detector|null $detector
      * @return bool
      */
-    public static function supportsCurrentOS(Detector $detector = null)
+    public function supportsCurrentOS(Detector $detector = null)
     {
         if ($detector === null) {
             $detector = new Detector();

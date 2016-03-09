@@ -14,7 +14,7 @@ class Hash implements DetectorInterface
     /**
      * @return array
      */
-    public static function supportsCurrentOS(Detector $detector = null)
+    public function supportsCurrentOS(Detector $detector = null)
     {
         if ($detector === null) {
             $detector = new Detector();
