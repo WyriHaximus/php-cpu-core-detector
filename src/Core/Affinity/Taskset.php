@@ -33,6 +33,6 @@ class Taskset implements AffinityInterface
      */
     public function execute($address = 0, $cmd = '')
     {
-        return 'taskset -c ' . $address . ' ' . $cmd;
+        return \React\Promise\resolve('taskset -c ' . $address . ' ' . $cmd);
     }
 }
