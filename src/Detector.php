@@ -4,6 +4,7 @@ namespace WyriHaximus\CpuCoreDetector;
 
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
+use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 
 class Detector
@@ -37,6 +38,13 @@ class Detector
             $collections->getCounters()
         )->then(function (CountInterface $counter) {
             return $counter->execute();
+        })->then(function ($count) use ($collections) {
+            return $collections->getDetectors()->execute(
+                $collections->getAffinities()
+            )->then(function (AffinityInterface $affinity) use ($count) {
+                Resolver::setAffinity($affinity);
+                return \React\Promise\resolve($count);
+            });
         });
     }
 }

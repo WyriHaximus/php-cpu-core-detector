@@ -2,6 +2,7 @@
 
 namespace WyriHaximus\CpuCoreDetector;
 
+use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
 
 class Collections
@@ -16,10 +17,19 @@ class Collections
      */
     protected $counters;
 
-    public function __construct(DetectorCollection $detectors, CountCollection $counters)
-    {
+    /**
+     * @var AffinityCollection
+     */
+    protected $affinities;
+
+    public function __construct(
+        DetectorCollection $detectors,
+        CountCollection $counters,
+        AffinityCollection $affinities
+    ) {
         $this->detectors = $detectors;
         $this->counters = $counters;
+        $this->affinities = $affinities;
     }
 
     /**
@@ -36,5 +46,13 @@ class Collections
     public function getCounters()
     {
         return $this->counters;
+    }
+
+    /**
+     * @return AffinityCollection
+     */
+    public function getAffinities()
+    {
+        return $this->affinities;
     }
 }

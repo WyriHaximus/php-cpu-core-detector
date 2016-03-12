@@ -12,8 +12,10 @@ class CollectionsTest extends \PHPUnit_Framework_TestCase
         $loop = Phake::mock('React\EventLoop\LoopInterface');
         $detectors = \WyriHaximus\CpuCoreDetector\getDefaultDetectors($loop);
         $counters = \WyriHaximus\CpuCoreDetector\getDefaultCounters($loop);
-        $collection = new Collections($detectors, $counters);
+        $affinities = \WyriHaximus\CpuCoreDetector\getDefaultAffinities($loop);
+        $collection = new Collections($detectors, $counters, $affinities);
         $this->assertSame($detectors, $collection->getDetectors());
         $this->assertSame($counters, $collection->getCounters());
+        $this->assertSame($affinities, $collection->getAffinities());
     }
 }

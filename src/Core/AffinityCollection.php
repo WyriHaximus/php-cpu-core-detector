@@ -2,7 +2,7 @@
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
-class AffinityCollection implements \Iterator
+class AffinityCollection implements CoreCollectionInterface
 {
     /**
      * @var AffinityInterface[]

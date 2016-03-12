@@ -4,6 +4,7 @@ namespace WyriHaximus\CpuCoreDetector;
 
 use Prophecy\Promise\PromiseInterface;
 use React\Promise\RejectedPromise;
+use WyriHaximus\CpuCoreDetector\Core\CoreCollectionInterface;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 
@@ -24,10 +25,10 @@ class DetectorCollection
     }
 
     /**
-     * @param CountCollection $possibilities
+     * @param CoreCollectionInterface $possibilities
      * @return PromiseInterface
      */
-    public function execute(CountCollection $possibilities)
+    public function execute(CoreCollectionInterface $possibilities)
     {
         $promiseChain = new RejectedPromise();
 
@@ -47,10 +48,10 @@ class DetectorCollection
     }
 
     /**
-     * @param CountInterface $counter
+     * @param CoreInterface $core
      * @return PromiseInterface
      */
-    protected function tryDetectors(CountInterface $counter)
+    protected function tryDetectors(CoreInterface $core)
     {
         $promiseChain = new RejectedPromise();
 
@@ -59,8 +60,8 @@ class DetectorCollection
                 continue;
             }
 
-            $promiseChain = $promiseChain->otherwise(function () use ($counter, $possibility) {
-                return $possibility->execute($counter->getCommandName());
+            $promiseChain = $promiseChain->otherwise(function () use ($core, $possibility) {
+                return $possibility->execute($core->getCommandName());
             });
         }
 

@@ -2,7 +2,7 @@
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
-class CountCollection implements \Iterator
+class CountCollection implements CoreCollectionInterface
 {
     /**
      * @var CountInterface[]
