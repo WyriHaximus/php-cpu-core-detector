@@ -53,5 +53,5 @@ script: make travis
 ## Run examples after tests and gather coverage and set it to coverage servers
 after_script:
   - php examples/sync.php
-  - php examples/ssync.php
+  - php examples/async.php
   - make travis-coverage
