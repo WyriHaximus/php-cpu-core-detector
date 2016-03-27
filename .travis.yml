@@ -50,10 +50,8 @@ install:
 ## Run the actual test
 script: make travis
 
-## Run examples after tests
+## Run examples after tests and gather coverage and set it to coverage servers
 after_script:
   - php examples/sync.php
   - php examples/ssync.php
-
-## Gather coverage and set it to coverage servers
-after_script: make travis-coverage
+  - make travis-coverage
