@@ -1,5 +1,9 @@
 # php-cpu-core-detection
 
+## Supported OS/Programs
+
+Currently only Linux with `hash`, `nproc` and `taskset` are supported.
+
 ## License ##
 
 Copyright 2016 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
