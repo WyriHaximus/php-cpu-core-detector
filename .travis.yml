@@ -39,7 +39,7 @@ matrix:
       env: dependencies=highest
 
 ## Update composer and run the appropriate composer command
-before_script:
+install:
   - composer self-update
   - composer config --unset platform.php
   - if [ -z "$dependencies" ]; then composer install; fi;
