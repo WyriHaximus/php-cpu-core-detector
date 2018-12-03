@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
@@ -15,14 +15,14 @@ class Resolver
     /**
      * @param AffinityInterface $affinity
      */
-    public static function setAffinity(AffinityInterface $affinity)
+    public static function setAffinity(AffinityInterface $affinity): void
     {
         self::$affinity = $affinity;
     }
 
     /**
-     * @return AffinityInterface
      * @throws \Exception
+     * @return AffinityInterface
      */
     public static function getAffinity()
     {
@@ -35,16 +35,16 @@ class Resolver
 
     /**
      * @param $address
-     * @param string $cmd
-     * @return PromiseInterface
+     * @param  string           $cmd
      * @throws \Exception
+     * @return PromiseInterface
      */
     public static function resolve($address, $cmd = '')
     {
         return self::getAffinity()->execute($address, $cmd);
     }
 
-    public static function reset()
+    public static function reset(): void
     {
         self::$affinity = null;
     }

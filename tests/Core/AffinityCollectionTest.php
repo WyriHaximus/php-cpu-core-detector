@@ -1,16 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Core;
 
-use Phake;
-use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
+use ApiClients\Tools\TestUtilities\TestCase;
 
-class AffinityCollectionTest extends \PHPUnit_Framework_TestCase
+use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
+use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
+
+/**
+ * @internal
+ */
+final class AffinityCollectionTest extends TestCase
 {
-    public function testIterator()
+    public function testIterator(): void
     {
-        $affinity0 = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
-        $affinity1 = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
+        $affinity0 = $this->prophesize(AffinityInterface::class)->reveal();
+        $affinity1 = $this->prophesize(AffinityInterface::class)->reveal();
         $collection = new AffinityCollection([$affinity0, $affinity1]);
         $this->assertTrue($collection->valid());
         $this->assertSame(0, $collection->key());

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Count;
 
@@ -11,17 +11,6 @@ use WyriHaximus\React\ProcessOutcome;
 
 class Nproc implements CountInterface
 {
-    /**
-     * @param Detector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(Detector $detector = null)
-    {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
-        return $detector->isUnixLike();
-    }
 
     /**
      * @var LoopInterface
@@ -34,6 +23,19 @@ class Nproc implements CountInterface
     public function __construct(LoopInterface $loop)
     {
         $this->loop = $loop;
+    }
+
+    /**
+     * @param  Detector|null $detector
+     * @return bool
+     */
+    public function supportsCurrentOS(Detector $detector = null)
+    {
+        if ($detector === null) {
+            $detector = new Detector();
+        }
+
+        return $detector->isUnixLike();
     }
 
     /**
@@ -54,7 +56,7 @@ class Nproc implements CountInterface
             new Process('nproc')
         )->then(function (ProcessOutcome $outcome) {
             if ($outcome->getExitCode() == 0) {
-                return \React\Promise\resolve((int) trim($outcome->getStdout()));
+                return \React\Promise\resolve((int) \trim($outcome->getStdout()));
             }
 
             return \React\Promise\reject();

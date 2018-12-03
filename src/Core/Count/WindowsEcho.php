@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Count;
 
@@ -11,17 +11,6 @@ use WyriHaximus\React\ProcessOutcome;
 
 class WindowsEcho implements CountInterface
 {
-    /**
-     * @param Detector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(Detector $detector = null)
-    {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
-        return $detector->isWindowsLike();
-    }
 
     /**
      * @var LoopInterface
@@ -35,6 +24,19 @@ class WindowsEcho implements CountInterface
     public function __construct(LoopInterface $loop)
     {
         $this->loop = $loop;
+    }
+
+    /**
+     * @param  Detector|null $detector
+     * @return bool
+     */
+    public function supportsCurrentOS(Detector $detector = null)
+    {
+        if ($detector === null) {
+            $detector = new Detector();
+        }
+
+        return $detector->isWindowsLike();
     }
 
     /**
@@ -55,7 +57,7 @@ class WindowsEcho implements CountInterface
             new Process('echo %NUMBER_OF_PROCESSORS%')
         )->then(function (ProcessOutcome $outcome) {
             if ($outcome->getExitCode() == 0) {
-                return \React\Promise\resolve((int) trim($outcome->getStdout()));
+                return \React\Promise\resolve((int) \trim($outcome->getStdout()));
             }
 
             return \React\Promise\reject();

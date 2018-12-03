@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
@@ -8,7 +8,7 @@ use Tivie\OS\Detector as OSDetector;
 interface StrategyInterface
 {
     /**
-     * @param OSDetector|null $detector
+     * @param  OSDetector|null $detector
      * @return bool
      */
     public function supportsCurrentOS(OSDetector $detector = null);

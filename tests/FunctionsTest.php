@@ -1,31 +1,42 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use Phake;
+use ApiClients\Tools\TestUtilities\TestCase;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+use React\EventLoop\LoopInterface;
+use WyriHaximus\CpuCoreDetector\Collections;
+use WyriHaximus\CpuCoreDetector\Core\CountCollection;
+use WyriHaximus\CpuCoreDetector\DetectorCollection;
+use function WyriHaximus\CpuCoreDetector\getDefaultCollections;
+use function WyriHaximus\CpuCoreDetector\getDefaultCounters;
+use function WyriHaximus\CpuCoreDetector\getDefaultDetectors;
+
+/**
+ * @internal
+ */
+final class FunctionsTest extends TestCase
 {
-    public function testGetDefaultCollections()
+    public function testGetDefaultCollections(): void
     {
-        $loop = Phake::mock('React\EventLoop\LoopInterface');
-        $collection = \WyriHaximus\CpuCoreDetector\getDefaultCollections($loop);
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\Collections', $collection);
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\DetectorCollection', $collection->getDetectors());
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\Core\CountCollection', $collection->getCounters());
+        $loop = $this->prophesize(LoopInterface::class);
+        $collection = getDefaultCollections($loop->reveal());
+        $this->assertInstanceOf(Collections::class, $collection);
+        $this->assertInstanceOf(DetectorCollection::class, $collection->getDetectors());
+        $this->assertInstanceOf(CountCollection::class, $collection->getCounters());
     }
 
-    public function testGetDefaultDetectors()
+    public function testGetDefaultDetectors(): void
     {
-        $loop = Phake::mock('React\EventLoop\LoopInterface');
-        $detectors = \WyriHaximus\CpuCoreDetector\getDefaultDetectors($loop);
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\DetectorCollection', $detectors);
+        $loop = $this->prophesize(LoopInterface::class);
+        $detectors = getDefaultDetectors($loop->reveal());
+        $this->assertInstanceOf(DetectorCollection::class, $detectors);
     }
 
-    public function testGetDefaultCounters()
+    public function testGetDefaultCounters(): void
     {
-        $loop = Phake::mock('React\EventLoop\LoopInterface');
-        $counters = \WyriHaximus\CpuCoreDetector\getDefaultCounters($loop);
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\Core\CountCollection', $counters);
+        $loop = $this->prophesize(LoopInterface::class);
+        $counters = getDefaultCounters($loop->reveal());
+        $this->assertInstanceOf(CountCollection::class, $counters);
     }
 }

@@ -1,16 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Core;
 
-use Phake;
-use WyriHaximus\CpuCoreDetector\Core\CountCollection;
+use ApiClients\Tools\TestUtilities\TestCase;
 
-class CountCollectionTest extends \PHPUnit_Framework_TestCase
+use WyriHaximus\CpuCoreDetector\Core\CountCollection;
+use WyriHaximus\CpuCoreDetector\Core\CountInterface;
+
+/**
+ * @internal
+ */
+final class CountCollectionTest extends TestCase
 {
-    public function testIterator()
+    public function testIterator(): void
     {
-        $count0 = Phake::mock('WyriHaximus\CpuCoreDetector\Core\CountInterface');
-        $count1 = Phake::mock('WyriHaximus\CpuCoreDetector\Core\CountInterface');
+        $count0 = $this->prophesize(CountInterface::class)->reveal();
+        $count1 = $this->prophesize(CountInterface::class)->reveal();
         $collection = new CountCollection([$count0, $count1]);
         $this->assertTrue($collection->valid());
         $this->assertSame(0, $collection->key());

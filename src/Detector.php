@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
@@ -14,7 +14,7 @@ class Detector
         $return = null;
         $loop = Factory::create();
 
-        $assign = function ($value) use (&$return) {
+        $assign = function ($value) use (&$return): void {
             $return = $value;
         };
         static::detectAsync($loop, $collections)->then($assign, $assign);
@@ -43,6 +43,7 @@ class Detector
                 $collections->getAffinities()
             )->then(function (AffinityInterface $affinity) use ($count) {
                 Resolver::setAffinity($affinity);
+
                 return \React\Promise\resolve($count);
             });
         });

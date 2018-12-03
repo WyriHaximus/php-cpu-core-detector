@@ -1,32 +1,36 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use Phake;
+use ApiClients\Tools\TestUtilities\TestCase;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
-use WyriHaximus\CpuCoreDetector\Detector;
+use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\CpuCoreDetector\DetectorCollection;
 
-class DetectorCollectionTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ */
+final class DetectorCollectionTest extends TestCase
 {
-    public function testDetectorCollection()
+    public function testDetectorCollection(): void
     {
-        $counterUnSupported = Phake::mock('WyriHaximus\CpuCoreDetector\Core\CountInterface');
-        Phake::when($counterUnSupported)->supportsCurrentOS()->thenReturn(false);
-        $counterSupported = Phake::mock('WyriHaximus\CpuCoreDetector\Core\CountInterface');
-        Phake::when($counterSupported)->supportsCurrentOS()->thenReturn(true);
+        $counterUnSupported = $this->prophesize(CountInterface::class);
+        $counterUnSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(false);
+        $counterSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\Core\CountInterface');
+        $counterSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(true);
+        $counterSupported->getCommandName()->shouldBeCalled()->willReturn('');
+        //$counterSupported->execute()->shouldBeCalled()->willReturn(1);
 
-        $detectorUnSupported = Phake::mock('WyriHaximus\CpuCoreDetector\DetectorInterface');
-        Phake::when($detectorUnSupported)->supportsCurrentOS()->thenReturn(false);
-        $detectorSupported = Phake::mock('WyriHaximus\CpuCoreDetector\DetectorInterface');
-        Phake::when($detectorSupported)->supportsCurrentOS()->thenReturn(true);
+        $detectorUnSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\DetectorInterface');
+        $detectorUnSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(false);
+        $detectorSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\DetectorInterface');
+        $detectorSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(true);
+        $detectorSupported->execute('')->shouldBeCalled()->willReturn(1);
 
-        $promiseResolved = false;
-        (new DetectorCollection([$detectorUnSupported, $detectorSupported]))->execute(new CountCollection([$counterUnSupported, $counterSupported]))->then(function ($resolvedCounter) use (&$promiseResolved, $counterSupported) {
-            $this->assertSame($counterSupported, $resolvedCounter);
-            $promiseResolved = true;
-        });
+        $resolvedCounter = $this->await((new DetectorCollection([$detectorUnSupported->reveal(), $detectorSupported->reveal()]))->execute(
+            new CountCollection([$counterUnSupported->reveal(), $counterSupported->reveal()])
+        ));
 
-        $this->assertTrue($promiseResolved);
+        $this->assertSame($counterSupported->reveal(), $resolvedCounter);
     }
 }

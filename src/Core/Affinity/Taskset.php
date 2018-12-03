@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Affinity;
 
@@ -9,7 +9,7 @@ use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 class Taskset implements AffinityInterface
 {
     /**
-     * @param Detector|null $detector
+     * @param  Detector|null $detector
      * @return bool
      */
     public function supportsCurrentOS(Detector $detector = null)
@@ -17,6 +17,7 @@ class Taskset implements AffinityInterface
         if ($detector === null) {
             $detector = new Detector();
         }
+
         return $detector->isUnixLike();
     }
 
@@ -29,6 +30,8 @@ class Taskset implements AffinityInterface
     }
 
     /**
+     * @param  mixed            $address
+     * @param  mixed            $cmd
      * @return PromiseInterface
      */
     public function execute($address = 0, $cmd = '')

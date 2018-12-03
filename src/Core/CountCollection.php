@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
@@ -23,7 +23,7 @@ class CountCollection implements CoreCollectionInterface
         $this->counters = $counters;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -38,7 +38,7 @@ class CountCollection implements CoreCollectionInterface
         return $this->position;
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }

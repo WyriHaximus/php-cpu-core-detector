@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Detector;
 
@@ -11,16 +11,6 @@ use WyriHaximus\React\ProcessOutcome;
 
 class Hash implements DetectorInterface
 {
-    /**
-     * @return array
-     */
-    public function supportsCurrentOS(Detector $detector = null)
-    {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
-        return $detector->isUnixLike();
-    }
 
     /**
      * @var LoopInterface
@@ -37,7 +27,19 @@ class Hash implements DetectorInterface
     }
 
     /**
-     * @param string $program
+     * @return array
+     */
+    public function supportsCurrentOS(Detector $detector = null)
+    {
+        if ($detector === null) {
+            $detector = new Detector();
+        }
+
+        return $detector->isUnixLike();
+    }
+
+    /**
+     * @param  string           $program
      * @return PromiseInterface
      */
     public function execute($program = '')

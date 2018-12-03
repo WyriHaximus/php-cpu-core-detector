@@ -1,15 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use Phake;
+use ApiClients\Tools\TestUtilities\TestCase;
+
 use WyriHaximus\CpuCoreDetector\Collections;
 
-class CollectionsTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ */
+class CollectionsTest extends TestCase
 {
-    public function testCollections()
+    public function testCollections(): void
     {
-        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        $loop = $this->prophesize('React\EventLoop\LoopInterface')->reveal();
         $detectors = \WyriHaximus\CpuCoreDetector\getDefaultDetectors($loop);
         $counters = \WyriHaximus\CpuCoreDetector\getDefaultCounters($loop);
         $affinities = \WyriHaximus\CpuCoreDetector\getDefaultAffinities($loop);
