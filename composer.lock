@@ -227,16 +227,16 @@
         },
         {
             "name": "tivie/php-os-detector",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tivie/php-os-detector.git",
-                "reference": "58226a9068323ee0d104f615c99fb97adeb136ae"
+                "reference": "9461dcd85c00e03842264f2fc8ccdc8d46867321"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tivie/php-os-detector/zipball/58226a9068323ee0d104f615c99fb97adeb136ae",
-                "reference": "58226a9068323ee0d104f615c99fb97adeb136ae",
+                "url": "https://api.github.com/repos/tivie/php-os-detector/zipball/9461dcd85c00e03842264f2fc8ccdc8d46867321",
+                "reference": "9461dcd85c00e03842264f2fc8ccdc8d46867321",
                 "shasum": ""
             },
             "require": {
@@ -271,7 +271,7 @@
                 "os",
                 "os detection"
             ],
-            "time": "2014-12-19T01:17:49+00:00"
+            "time": "2017-10-21T03:33:59+00:00"
         },
         {
             "name": "wyrihaximus/react-child-process-promise",
