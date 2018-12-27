@@ -1,5 +1,6 @@
 {
     "name": "wyrihaximus/cpu-core-detector",
+    "description": "Detect how many CPU cores are available",
     "license": "MIT",
     "authors": [
         {
