@@ -3,9 +3,9 @@
 namespace WyriHaximus\CpuCoreDetector\Core\Affinity;
 
 use React\Promise\PromiseInterface;
+use function React\Promise\resolve;
 use Tivie\OS\Detector;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
-use function React\Promise\resolve;
 
 class CmdExe implements AffinityInterface
 {
