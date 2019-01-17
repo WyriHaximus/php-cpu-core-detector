@@ -1,5 +1,6 @@
 {
     "name": "wyrihaximus/cpu-core-detector",
+    "description": "Detect CPU core count and assign tasks to a specific code",
     "license": "MIT",
     "authors": [
         {
