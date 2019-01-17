@@ -4,6 +4,7 @@ namespace WyriHaximus\CpuCoreDetector;
 
 use WyriHaximus\FileDescriptors\Factory as FileDescriptorsFactory;
 use WyriHaximus\FileDescriptors\ListerInterface;
+use WyriHaximus\FileDescriptors\NoCompatibleListerException;
 
 final class StaticConfig
 {
@@ -29,8 +30,19 @@ final class StaticConfig
         }
 
         static $fileDescriptorLister = null;
+
+        if ($fileDescriptorLister === false) {
+            return [];
+        }
+
         if ($fileDescriptorLister === null) {
-            $fileDescriptorLister = FileDescriptorsFactory::create();
+            try {
+                $fileDescriptorLister = FileDescriptorsFactory::create();
+            } catch (NoCompatibleListerException $exception) {
+                $fileDescriptorLister = false;
+
+                return [];
+            }
         }
 
         return self::listFileDescriptors($fileDescriptorLister);
