@@ -45,7 +45,12 @@ final class StaticConfig
             }
         }
 
-        return self::listFileDescriptors($fileDescriptorLister);
+
+        $fds = [];
+        foreach (self::listFileDescriptors($fileDescriptorLister) as $id) {
+            $fds[(int)$id] = ['file', '/dev/null', 'r'];
+        }
+        return $fds;
     }
 
     private static function listFileDescriptors(ListerInterface $fileDescriptorLister)
