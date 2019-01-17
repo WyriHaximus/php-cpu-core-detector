@@ -127,9 +127,6 @@ script:
   - if [ -z "$qaExtended" || "${TRAVIS_OS_NAME}" != "windows"  ]; then make ci; fi;
   - if [ "${TRAVIS_OS_NAME}" = "windows"  ]; then vendor/bin/phpunit; fi;
   - if [ "$qaExtended" = "true" ]; then make ci-extended; fi;
-  - php benchmark/memory.php
-  - php examples/error/error.php
-  - php examples/overflow/overflow.php
 
 ## Run examples after tests and gather coverage and set it to coverage servers
 after_script:
