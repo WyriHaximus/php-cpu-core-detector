@@ -25,7 +25,11 @@ final class StaticConfig
 
     public static function getFileDescriptorList()
     {
-        if (self::shouldListFileDescriptors() && \DIRECTORY_SEPARATOR !== '\\') {
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            return [];
+        }
+
+        if (!self::shouldListFileDescriptors()) {
             return [];
         }
 
