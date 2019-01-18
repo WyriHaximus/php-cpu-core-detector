@@ -6,6 +6,7 @@ use ApiClients\Tools\TestUtilities\TestCase;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\CpuCoreDetector\DetectorCollection;
+use WyriHaximus\CpuCoreDetector\DetectorInterface;
 
 /**
  * @internal
@@ -16,14 +17,14 @@ final class DetectorCollectionTest extends TestCase
     {
         $counterUnSupported = $this->prophesize(CountInterface::class);
         $counterUnSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(false);
-        $counterSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\Core\CountInterface');
+        $counterSupported = $this->prophesize(CountInterface::class);
         $counterSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(true);
         $counterSupported->getCommandName()->shouldBeCalled()->willReturn('');
         //$counterSupported->execute()->shouldBeCalled()->willReturn(1);
 
-        $detectorUnSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\DetectorInterface');
+        $detectorUnSupported = $this->prophesize(DetectorInterface::class);
         $detectorUnSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(false);
-        $detectorSupported = $this->prophesize('WyriHaximus\CpuCoreDetector\DetectorInterface');
+        $detectorSupported = $this->prophesize(DetectorInterface::class);
         $detectorSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(true);
         $detectorSupported->execute('')->shouldBeCalled()->willReturn(1);
 

@@ -2,6 +2,7 @@
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Detector;
 
+use React\EventLoop\LoopInterface;
 use WyriHaximus\CpuCoreDetector\Detector\Hash;
 use WyriHaximus\CpuCoreDetector\Tests\AbstractStrategyTest;
 
@@ -12,6 +13,6 @@ class HashTest extends AbstractStrategyTest
 {
     protected function getStrategy()
     {
-        return new Hash($this->prophesize('React\EventLoop\LoopInterface')->reveal());
+        return new Hash($this->prophesize(LoopInterface::class)->reveal());
     }
 }

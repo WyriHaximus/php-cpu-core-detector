@@ -4,6 +4,8 @@ namespace WyriHaximus\CpuCoreDetector\Tests;
 
 use ApiClients\Tools\TestUtilities\TestCase;
 
+use React\EventLoop\LoopInterface;
+
 use WyriHaximus\CpuCoreDetector\Collections;
 
 /**
@@ -13,7 +15,7 @@ class CollectionsTest extends TestCase
 {
     public function testCollections(): void
     {
-        $loop = $this->prophesize('React\EventLoop\LoopInterface')->reveal();
+        $loop = $this->prophesize(LoopInterface::class)->reveal();
         $detectors = \WyriHaximus\CpuCoreDetector\getDefaultDetectors($loop);
         $counters = \WyriHaximus\CpuCoreDetector\getDefaultCounters($loop);
         $affinities = \WyriHaximus\CpuCoreDetector\getDefaultAffinities($loop);

@@ -2,13 +2,15 @@
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Detector;
 
+use WyriHaximus\CpuCoreDetector\DetectorInterface;
+
 use WyriHaximus\CpuCoreDetector\Tests\Core\AbstractCoreTest;
 
 abstract class AbstractDetectorTest extends AbstractCoreTest
 {
     public function testImplementsDetectorInterface(): void
     {
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\DetectorInterface', $this->getStrategy());
+        $this->assertInstanceOf(DetectorInterface::class, $this->getStrategy());
     }
 
     public function testGetCommandName(): void

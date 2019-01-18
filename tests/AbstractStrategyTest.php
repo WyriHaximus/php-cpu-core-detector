@@ -4,11 +4,15 @@ namespace WyriHaximus\CpuCoreDetector\Tests;
 
 use ApiClients\Tools\TestUtilities\TestCase;
 
+use React\Promise\PromiseInterface;
+
+use WyriHaximus\CpuCoreDetector\StrategyInterface;
+
 abstract class AbstractStrategyTest extends TestCase
 {
     public function testImplementsStrategyInterface(): void
     {
-        $this->assertInstanceOf('WyriHaximus\CpuCoreDetector\StrategyInterface', $this->getStrategy());
+        $this->assertInstanceOf(StrategyInterface::class, $this->getStrategy());
     }
 
     public function testSupportsCurrentOS(): void
@@ -18,7 +22,7 @@ abstract class AbstractStrategyTest extends TestCase
 
     public function testExecute(): void
     {
-        $this->assertInstanceOf('React\Promise\PromiseInterface', $this->getStrategy()->execute());
+        $this->assertInstanceOf(PromiseInterface::class, $this->getStrategy()->execute());
     }
 
     abstract protected function getStrategy();
