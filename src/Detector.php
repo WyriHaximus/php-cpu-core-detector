@@ -14,8 +14,9 @@ class Detector
         $return = null;
         $loop = Factory::create();
 
-        $assign = function ($value) use (&$return) {
+        $assign = function ($value) use (&$return, $loop) {
             $return = $value;
+            $loop->stop();
         };
         static::detectAsync($loop, $collections)->then($assign, $assign);
 

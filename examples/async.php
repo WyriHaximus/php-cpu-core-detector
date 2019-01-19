@@ -9,13 +9,17 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 $loop = Factory::create();
 
-Detector::detectAsync($loop)->done(function ($result) {
+Detector::detectAsync($loop)->done(function ($result) use ($loop) {
     echo $result, PHP_EOL;
     for ($i = 0; $i < $result; $i++) {
-        Resolver::resolve($i, 'uptime')->done(function ($cmd) {
+        $promises[] = Resolver::resolve($i, 'uptime')->then(function ($cmd) {
             echo $cmd, PHP_EOL;
         });
     }
+
+    \React\Promise\all($promises)->done(function () use ($loop) {
+        $loop->stop();
+    });
 });
 
 $loop->run();
