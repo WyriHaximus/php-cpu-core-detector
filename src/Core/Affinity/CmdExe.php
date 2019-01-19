@@ -25,7 +25,7 @@ class CmdExe implements AffinityInterface
      */
     public function getCommandName()
     {
-        return 'cmd.exe';
+        return 'cmd';
     }
 
     /**
