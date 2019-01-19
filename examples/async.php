@@ -9,10 +9,10 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 $loop = Factory::create();
 
-Detector::detectAsync($loop)->then(function ($result) {
+Detector::detectAsync($loop)->done(function ($result) {
     echo $result, PHP_EOL;
     for ($i = 0; $i < $result; $i++) {
-        Resolver::resolve($i, 'uptime')->then(function ($cmd) {
+        Resolver::resolve($i, 'uptime')->done(function ($cmd) {
             echo $cmd, PHP_EOL;
         });
     }

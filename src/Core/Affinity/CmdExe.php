@@ -33,6 +33,6 @@ class CmdExe implements AffinityInterface
      */
     public function execute($address = 0, $cmd = '')
     {
-        return \React\Promise\resolve('cmd.exe /C start /affinity ' . $address . ' ' . $cmd);
+        return \React\Promise\resolve('cmd /C start /affinity ' . $address . ' ' . $cmd);
     }
 }
