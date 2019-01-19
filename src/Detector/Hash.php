@@ -43,7 +43,10 @@ class Hash implements DetectorInterface
      */
     public function execute($program = '')
     {
-        return \WyriHaximus\CpuCoreDetector\launch('hash ' . $program, $this->loop)->then(function (ProcessOutcome $outcome) {
+        return \WyriHaximus\CpuCoreDetector\launch(
+            'hash ' . $program,
+            $this->loop
+        )->then(function (ProcessOutcome $outcome) {
             if ($outcome->getExitCode() == 0) {
                 return \React\Promise\resolve();
             }
