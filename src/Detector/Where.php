@@ -47,7 +47,10 @@ class Where implements DetectorInterface
             return \React\Promise\resolve();
         }
 
-        return \WyriHaximus\CpuCoreDetector\launch('WHERE ' . $program, $this->loop)->then(function (ProcessOutcome $outcome) {
+        return \WyriHaximus\CpuCoreDetector\launch(
+            'WHERE ' . $program,
+            $this->loop
+        )->then(function (ProcessOutcome $outcome) {
             if ($outcome->getExitCode() == 0) {
                 return \React\Promise\resolve();
             }
