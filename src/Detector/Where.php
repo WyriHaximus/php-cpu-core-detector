@@ -43,7 +43,7 @@ class Where implements DetectorInterface
      */
     public function execute($program = '')
     {
-        if ($program === 'echo') {
+        if ($program === 'echo' || $program === 'cmd') {
             return \React\Promise\resolve();
         }
 
