@@ -42,7 +42,6 @@ class Detector
             return $collections->getDetectors()->execute(
                 $collections->getAffinities()
             )->then(function (AffinityInterface $affinity) use ($count) {
-                var_export($affinity);
                 Resolver::setAffinity($affinity);
                 return \React\Promise\resolve($count);
             });
