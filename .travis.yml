@@ -127,9 +127,9 @@ script:
   - if [ -z "$qaExtended" || "${TRAVIS_OS_NAME}" != "windows"  ]; then make ci; fi;
   - if [ "${TRAVIS_OS_NAME}" = "windows"  ]; then vendor/bin/phpunit; fi;
   - if [ "$qaExtended" = "true" ]; then make ci-extended; fi;
+  - php examples/sync.php
+  - php examples/async.php
 
 ## Run examples after tests and gather coverage and set it to coverage servers
 after_script:
-  - php examples/sync.php
-  - php examples/async.php
   - if [ "$qaExtended" = "true" ]; then make ci-coverage; fi;
