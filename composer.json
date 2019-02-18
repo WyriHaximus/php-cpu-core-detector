@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "react/child-process": "^0.5 || ^0.4",
+        "react/child-process": "^0.5 || ^0.4 || ^0.6",
         "tivie/php-os-detector": "^1.0",
         "wyrihaximus/ticking-promise": "^1.5",
         "wyrihaximus/react-child-process-promise": "^2.0"
