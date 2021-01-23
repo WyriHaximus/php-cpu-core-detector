@@ -1,27 +1,28 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use ApiClients\Tools\TestUtilities\TestCase;
-
 use React\EventLoop\LoopInterface;
-
 use WyriHaximus\CpuCoreDetector\Collections;
+use WyriHaximus\TestUtilities\TestCase;
 
-/**
- * @internal
- */
-class CollectionsTest extends TestCase
+use function WyriHaximus\CpuCoreDetector\getDefaultAffinities;
+use function WyriHaximus\CpuCoreDetector\getDefaultCounters;
+use function WyriHaximus\CpuCoreDetector\getDefaultDetectors;
+
+final class CollectionsTest extends TestCase
 {
     public function testCollections(): void
     {
-        $loop = $this->prophesize(LoopInterface::class)->reveal();
-        $detectors = \WyriHaximus\CpuCoreDetector\getDefaultDetectors($loop);
-        $counters = \WyriHaximus\CpuCoreDetector\getDefaultCounters($loop);
-        $affinities = \WyriHaximus\CpuCoreDetector\getDefaultAffinities($loop);
+        $loop       = $this->prophesize(LoopInterface::class)->reveal();
+        $detectors  = getDefaultDetectors($loop);
+        $counters   = getDefaultCounters($loop);
+        $affinities = getDefaultAffinities($loop);
         $collection = new Collections($detectors, $counters, $affinities);
-        $this->assertSame($detectors, $collection->getDetectors());
-        $this->assertSame($counters, $collection->getCounters());
-        $this->assertSame($affinities, $collection->getAffinities());
+        self::assertSame($detectors, $collection->detectors());
+        self::assertSame($counters, $collection->counters());
+        self::assertSame($affinities, $collection->affinities());
     }
 }

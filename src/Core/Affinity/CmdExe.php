@@ -1,41 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Affinity;
 
 use React\Promise\PromiseInterface;
-use function React\Promise\resolve;
 use Tivie\OS\Detector;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 
-class CmdExe implements AffinityInterface
-{
-    /**
-     * @param  Detector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(Detector $detector = null)
-    {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
+use function React\Promise\resolve;
 
-        return $detector->isWindowsLike();
+final class CmdExe implements AffinityInterface
+{
+    public function supportsCurrentOS(): bool
+    {
+        return (bool) (new Detector())->isWindowsLike();
     }
 
-    /**
-     * @return string
-     */
-    public function getCommandName()
+    public function getCommandName(): string
     {
         return 'cmd.exe';
     }
 
     /**
-     * @param  mixed            $address
-     * @param  mixed            $cmd
-     * @return PromiseInterface
+     * @param  mixed $address
+     * @param  mixed $cmd
      */
-    public function execute($address = 0, $cmd = '')
+    public function execute($address = 0, $cmd = ''): PromiseInterface
     {
         return resolve('cmd.exe /C start /affinity ' . $address . ' ' . $cmd);
     }

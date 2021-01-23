@@ -1,39 +1,38 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use ApiClients\Tools\TestUtilities\TestCase;
-use React\Promise\FulfilledPromise;
 use WyriHaximus\CpuCoreDetector\Collections;
-
-use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
+use WyriHaximus\CpuCoreDetector\Core\AffinityCollectionInterface;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
-use WyriHaximus\CpuCoreDetector\Core\CountCollection;
+use WyriHaximus\CpuCoreDetector\Core\CoreCollectionInterface;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\CpuCoreDetector\Detector;
-use WyriHaximus\CpuCoreDetector\DetectorCollection;
+use WyriHaximus\CpuCoreDetector\DetectorCollectionInterface;
+use WyriHaximus\TestUtilities\TestCase;
 
-/**
- * @internal
- */
+use function React\Promise\resolve;
+
 final class DetectorTest extends TestCase
 {
     public function testDetect(): void
     {
-        $counters = $this->prophesize(CountCollection::class);
-        $affinities = $this->prophesize(AffinityCollection::class);
+        $counters   = $this->prophesize(CoreCollectionInterface::class);
+        $affinities = $this->prophesize(AffinityCollectionInterface::class);
 
         $counter = $this->prophesize(CountInterface::class);
-        $counter->execute()->shouldBeCalled()->willReturn(new FulfilledPromise(128));
+        $counter->execute()->shouldBeCalled()->willReturn(resolve(128));
 
         $affinity = $this->prophesize(AffinityInterface::class);
 
-        $detectors = $this->prophesize(DetectorCollection::class);
-        $detectors->execute($counters)->willReturn(new FulfilledPromise($counter->reveal()));
-        $detectors->execute($affinities)->willReturn(new FulfilledPromise($affinity->reveal()));
+        $detectors = $this->prophesize(DetectorCollectionInterface::class);
+        $detectors->execute($counters)->willReturn(resolve($counter->reveal()));
+        $detectors->execute($affinities)->willReturn(resolve($affinity->reveal()));
 
         $collection = new Collections($detectors->reveal(), $counters->reveal(), $affinities->reveal());
 
-        $this->assertSame(128, Detector::detect($collection));
+        self::assertSame(128, Detector::detectWithCollections($collection));
     }
 }

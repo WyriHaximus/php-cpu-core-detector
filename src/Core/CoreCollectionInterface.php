@@ -1,9 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
 use Iterator;
+use WyriHaximus\CpuCoreDetector\CollectionInterface;
 
-interface CoreCollectionInterface extends Iterator
+/** @phpstan-ignore-next-line */
+interface CoreCollectionInterface extends CollectionInterface, Iterator
 {
 }

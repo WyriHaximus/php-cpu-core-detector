@@ -1,20 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
 use React\Promise\PromiseInterface;
-use Tivie\OS\Detector as OSDetector;
 
 interface StrategyInterface
 {
-    /**
-     * @param  OSDetector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(OSDetector $detector = null);
+    public function supportsCurrentOS(): bool;
 
-    /**
-     * @return PromiseInterface
-     */
-    public function execute();
+    public function execute(): PromiseInterface;
 }

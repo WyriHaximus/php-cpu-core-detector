@@ -1,0 +1,10 @@
+parameters:
+	ergebnis:
+		classesAllowedToBeExtended:
+			- WyriHaximus\CpuCoreDetector\Tests\AbstractStrategyTest
+			- WyriHaximus\CpuCoreDetector\Tests\Core\Affinity\AbstractAffinityTest
+			- WyriHaximus\CpuCoreDetector\Tests\Core\AbstractCoreTest
+			- WyriHaximus\CpuCoreDetector\Tests\Core\Count\AbstractCountTest
+
+includes:
+	- vendor/wyrihaximus/async-test-utilities/rules.neon

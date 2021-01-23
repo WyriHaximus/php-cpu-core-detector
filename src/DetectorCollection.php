@@ -1,20 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
-use Prophecy\Promise\PromiseInterface;
-use React\Promise\RejectedPromise;
-use WyriHaximus\CpuCoreDetector\Core\CoreCollectionInterface;
+use React\Promise\PromiseInterface;
+use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 
-class DetectorCollection
+use function React\Promise\reject;
+
+final class DetectorCollection implements DetectorCollectionInterface
 {
-    /**
-     * @var DetectorInterface[]
-     */
-    protected $detectors;
+    /** @var DetectorInterface[] */
+    protected array $detectors;
 
     /**
-     * DetectorCollection constructor.
      * @param DetectorInterface[] $detectors
      */
     public function __construct(array $detectors)
@@ -23,44 +23,43 @@ class DetectorCollection
     }
 
     /**
-     * @param  CoreCollectionInterface $possibilities
-     * @return PromiseInterface
+     * @param CollectionInterface<AffinityInterface|CoreInterface|DetectorInterface> $possibilities
+     *
+     * @psalm-suppress TooManyTemplateParams
      */
-    public function execute(CoreCollectionInterface $possibilities)
+    public function execute(CollectionInterface $possibilities): PromiseInterface
     {
-        $promiseChain = new RejectedPromise();
+        $promiseChain = reject();
 
         foreach ($possibilities as $possibility) {
-            if (!$possibility->supportsCurrentOS()) {
+            if (! $possibility->supportsCurrentOS()) {
                 continue;
             }
 
-            $promiseChain = $promiseChain->otherwise(function () use ($possibility) {
-                return $this->tryDetectors($possibility)->then(function () use ($possibility) {
-                    return $possibility;
-                });
-            });
+            /** @psalm-suppress PossiblyUndefinedMethod */
+            $promiseChain = $promiseChain->otherwise(
+                /** @phpstan-ignore-next-line */
+                fn (): PromiseInterface => $this->tryDetectors($possibility)->then(static fn () => $possibility)
+            );
         }
 
         return $promiseChain;
     }
 
-    /**
-     * @param  CoreInterface    $core
-     * @return PromiseInterface
-     */
-    protected function tryDetectors(CoreInterface $core)
+    private function tryDetectors(CoreInterface $core): PromiseInterface
     {
-        $promiseChain = new RejectedPromise();
+        $promiseChain = reject();
 
         foreach ($this->detectors as $possibility) {
-            if (!$possibility->supportsCurrentOS()) {
+            if (! $possibility->supportsCurrentOS()) {
                 continue;
             }
 
-            $promiseChain = $promiseChain->otherwise(function () use ($core, $possibility) {
-                return $possibility->execute($core->getCommandName());
-            });
+            /** @psalm-suppress PossiblyUndefinedMethod */
+            $promiseChain = $promiseChain->otherwise(
+            /** @phpstan-ignore-next-line */
+                static fn (): PromiseInterface => $possibility->execute($core->getCommandName())
+            );
         }
 
         return $promiseChain;

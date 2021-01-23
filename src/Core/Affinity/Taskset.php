@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Affinity;
 
@@ -6,36 +8,26 @@ use React\Promise\PromiseInterface;
 use Tivie\OS\Detector;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 
-class Taskset implements AffinityInterface
-{
-    /**
-     * @param  Detector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(Detector $detector = null)
-    {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
+use function React\Promise\resolve;
 
-        return $detector->isUnixLike();
+final class Taskset implements AffinityInterface
+{
+    public function supportsCurrentOS(): bool
+    {
+        return (new Detector())->isUnixLike();
     }
 
-    /**
-     * @return string
-     */
-    public function getCommandName()
+    public function getCommandName(): string
     {
         return 'taskset';
     }
 
     /**
-     * @param  mixed            $address
-     * @param  mixed            $cmd
-     * @return PromiseInterface
+     * @param  mixed $address
+     * @param  mixed $cmd
      */
-    public function execute($address = 0, $cmd = '')
+    public function execute($address = 0, $cmd = ''): PromiseInterface
     {
-        return \React\Promise\resolve('taskset -c ' . $address . ' ' . $cmd);
+        return resolve('taskset -c ' . $address . ' ' . $cmd);
     }
 }

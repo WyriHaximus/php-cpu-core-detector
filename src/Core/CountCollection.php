@@ -1,22 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
-class CountCollection implements CoreCollectionInterface
+final class CountCollection implements CoreCollectionInterface
 {
-    /**
-     * @var CountInterface[]
-     */
-    protected $counters;
+    /** @var array<CountInterface> */
+    protected array $counters;
+
+    protected int $position = 0;
 
     /**
-     * @var int
-     */
-    protected $position = 0;
-
-    /**
-     * DetectorCollection constructor.
-     * @param CountInterface[] $counters
+     * @param array<CountInterface> $counters
      */
     public function __construct(array $counters)
     {
@@ -28,12 +24,12 @@ class CountCollection implements CoreCollectionInterface
         $this->position = 0;
     }
 
-    public function current()
+    public function current(): CountInterface
     {
         return $this->counters[$this->position];
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -43,8 +39,9 @@ class CountCollection implements CoreCollectionInterface
         ++$this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
+        /** @phpstan-ignore-next-line */
         return isset($this->counters[$this->position]);
     }
 }

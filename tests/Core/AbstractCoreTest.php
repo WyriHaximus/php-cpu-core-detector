@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Core;
 
@@ -7,13 +9,14 @@ use WyriHaximus\CpuCoreDetector\Tests\AbstractStrategyTest;
 
 abstract class AbstractCoreTest extends AbstractStrategyTest
 {
-    public function testImplementsCoreInterface(): void
+    final public function testImplementsCoreInterface(): void
     {
         self::assertInstanceOf(CoreInterface::class, $this->getStrategy());
     }
 
-    public function testGetCommandName(): void
+    final public function testGetCommandName(): void
     {
-        self::assertInternalType('string', $this->getStrategy()->getCommandName());
+        /** @phpstan-ignore-next-line */
+        self::assertIsString($this->getStrategy()->getCommandName());
     }
 }
