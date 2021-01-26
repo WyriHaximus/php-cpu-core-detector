@@ -1,16 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests\Core\Count;
 
 use React\EventLoop\LoopInterface;
 use WyriHaximus\CpuCoreDetector\Core\Count\Nproc;
+use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 
-/**
- * @internal
- */
 final class NprocTest extends AbstractCountTest
 {
-    protected function getStrategy()
+    protected function getStrategy(): CountInterface
     {
         return new Nproc($this->prophesize(LoopInterface::class)->reveal());
     }

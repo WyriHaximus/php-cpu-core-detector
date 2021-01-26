@@ -1,17 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use ApiClients\Tools\TestUtilities\TestCase;
-use React\Promise\FulfilledPromise;
-
+use Throwable;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 use WyriHaximus\CpuCoreDetector\Resolver;
+use WyriHaximus\TestUtilities\TestCase;
 
-/**
- * @internal
- */
-class ResolverTest extends TestCase
+use function React\Promise\resolve;
+
+final class ResolverTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -21,19 +21,17 @@ class ResolverTest extends TestCase
 
     public function testResolve(): void
     {
-        $promise = new FulfilledPromise();
+        $promise  = resolve(null);
         $affinity = $this->prophesize(AffinityInterface::class);
         $affinity->execute(13, 'cowsay')->shouldBeCalled()->willReturn($promise);
         Resolver::setAffinity($affinity->reveal());
-        $this->assertSame($promise, Resolver::resolve(13, 'cowsay'));
+        self::assertSame($promise, Resolver::resolve('13', 'cowsay'));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Affinity not set
-     */
     public function testGetAffinity(): void
     {
+        self::expectException(Throwable::class);
+        self::expectExceptionMessage('Affinity not set');
         Resolver::getAffinity();
     }
 
@@ -41,6 +39,6 @@ class ResolverTest extends TestCase
     {
         $affinity = $this->prophesize(AffinityInterface::class)->reveal();
         Resolver::setAffinity($affinity);
-        $this->assertSame($affinity, Resolver::getAffinity());
+        self::assertSame($affinity, Resolver::getAffinity());
     }
 }

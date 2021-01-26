@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core\Count;
 
@@ -9,57 +11,41 @@ use Tivie\OS\Detector;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\React\ProcessOutcome;
 
-class Nproc implements CountInterface
+use function React\Promise\reject;
+use function React\Promise\resolve;
+use function trim;
+use function WyriHaximus\React\childProcessPromise;
+
+final class Nproc implements CountInterface
 {
+    protected LoopInterface $loop;
 
-    /**
-     * @var LoopInterface
-     */
-    protected $loop;
-
-    /**
-     * @param LoopInterface $loop
-     */
     public function __construct(LoopInterface $loop)
     {
         $this->loop = $loop;
     }
 
-    /**
-     * @param  Detector|null $detector
-     * @return bool
-     */
-    public function supportsCurrentOS(Detector $detector = null)
+    public function supportsCurrentOS(): bool
     {
-        if ($detector === null) {
-            $detector = new Detector();
-        }
-
-        return $detector->isUnixLike();
+        return (new Detector())->isUnixLike();
     }
 
-    /**
-     * @return string
-     */
-    public function getCommandName()
+    public function getCommandName(): string
     {
         return 'nproc';
     }
 
-    /**
-     * @return PromiseInterface
-     */
-    public function execute()
+    public function execute(): PromiseInterface
     {
-        return \WyriHaximus\React\childProcessPromise(
+        return childProcessPromise(
             $this->loop,
             new Process('nproc')
-        )->then(function (ProcessOutcome $outcome) {
-            if ($outcome->getExitCode() == 0) {
-                return \React\Promise\resolve((int) \trim($outcome->getStdout()));
+        )->then(static function (ProcessOutcome $outcome): PromiseInterface {
+            if ($outcome->getExitCode() === 0) {
+                return resolve((int) trim($outcome->getStdout()));
             }
 
-            return \React\Promise\reject();
+            return reject();
         });
     }
 }

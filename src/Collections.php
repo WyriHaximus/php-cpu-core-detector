@@ -1,57 +1,64 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
-use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
-use WyriHaximus\CpuCoreDetector\Core\CountCollection;
+use WyriHaximus\CpuCoreDetector\Core\AffinityCollectionInterface;
+use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
+use WyriHaximus\CpuCoreDetector\Core\CoreCollectionInterface;
 
-class Collections
+final class Collections
 {
+    protected DetectorCollectionInterface $detectors;
     /**
-     * @var DetectorCollection
+     * @psalm-suppress TooManyTemplateParams
+     * @var CoreCollectionInterface<CoreInterface>
      */
-    protected $detectors;
+    protected CoreCollectionInterface $counters;
+    /**
+     * @psalm-suppress TooManyTemplateParams
+     * @var AffinityCollectionInterface<AffinityInterface>
+     */
+    protected AffinityCollectionInterface $affinities;
 
     /**
-     * @var CountCollection
+     * @param CoreCollectionInterface<CoreInterface>         $counters
+     * @param AffinityCollectionInterface<AffinityInterface> $affinities
+     *
+     * @psalm-suppress TooManyTemplateParams
      */
-    protected $counters;
-
-    /**
-     * @var AffinityCollection
-     */
-    protected $affinities;
-
     public function __construct(
-        DetectorCollection $detectors,
-        CountCollection $counters,
-        AffinityCollection $affinities
+        DetectorCollectionInterface $detectors,
+        CoreCollectionInterface $counters,
+        AffinityCollectionInterface $affinities
     ) {
-        $this->detectors = $detectors;
-        $this->counters = $counters;
+        $this->detectors  = $detectors;
+        $this->counters   = $counters;
         $this->affinities = $affinities;
     }
 
-    /**
-     * @return DetectorCollection
-     */
-    public function getDetectors()
+    public function detectors(): DetectorCollectionInterface
     {
         return $this->detectors;
     }
 
     /**
-     * @return CountCollection
+     * @return CoreCollectionInterface<CoreInterface>
+     *
+     * @psalm-suppress TooManyTemplateParams
      */
-    public function getCounters()
+    public function counters(): CoreCollectionInterface
     {
         return $this->counters;
     }
 
     /**
-     * @return AffinityCollection
+     * @return AffinityCollectionInterface<AffinityInterface>
+     *
+     * @psalm-suppress TooManyTemplateParams
      */
-    public function getAffinities()
+    public function affinities(): AffinityCollectionInterface
     {
         return $this->affinities;
     }

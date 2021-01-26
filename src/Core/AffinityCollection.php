@@ -1,22 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Core;
 
-class AffinityCollection implements CoreCollectionInterface
+final class AffinityCollection implements AffinityCollectionInterface
 {
-    /**
-     * @var AffinityInterface[]
-     */
-    protected $affinities;
+    /** @var array<AffinityInterface> */
+    protected array $affinities;
+
+    protected int $position = 0;
 
     /**
-     * @var int
-     */
-    protected $position = 0;
-
-    /**
-     * DetectorCollection constructor.
-     * @param AffinityInterface[] $affinities
+     * @param array<AffinityInterface> $affinities
      */
     public function __construct(array $affinities)
     {
@@ -28,12 +24,12 @@ class AffinityCollection implements CoreCollectionInterface
         $this->position = 0;
     }
 
-    public function current()
+    public function current(): AffinityInterface
     {
         return $this->affinities[$this->position];
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -43,8 +39,9 @@ class AffinityCollection implements CoreCollectionInterface
         ++$this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
+        /** @phpstan-ignore-next-line  */
         return isset($this->affinities[$this->position]);
     }
 }

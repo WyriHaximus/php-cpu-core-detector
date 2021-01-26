@@ -1,46 +1,43 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
+use Exception;
 use React\Promise\PromiseInterface;
 use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
 
-class Resolver
+final class Resolver
 {
-    /**
-     * @var AffinityInterface
-     */
-    protected static $affinity;
+    protected static ?AffinityInterface $affinity = null;
 
-    /**
-     * @param AffinityInterface $affinity
-     */
     public static function setAffinity(AffinityInterface $affinity): void
     {
         self::$affinity = $affinity;
     }
 
-    /**
-     * @throws \Exception
-     * @return AffinityInterface
-     */
-    public static function getAffinity()
+    public static function getAffinity(): AffinityInterface
     {
-        if (!(self::$affinity instanceof AffinityInterface)) {
-            throw new \Exception('Affinity not set');
+        if (! (self::$affinity instanceof AffinityInterface)) {
+            /** @phpstan-ignore-next-line */
+            throw new Exception('Affinity not set');
         }
 
         return self::$affinity;
     }
 
-    /**
-     * @param $address
-     * @param  string           $cmd
-     * @throws \Exception
-     * @return PromiseInterface
-     */
-    public static function resolve($address, $cmd = '')
+    public static function resolve(string $address, string $cmd = ''): PromiseInterface
     {
+        if (! (self::$affinity instanceof AffinityInterface)) {
+            /** @phpstan-ignore-next-line */
+            throw new Exception('Affinity not set');
+        }
+
+        /**
+         * @phpstan-ignore-next-line
+         * @psalm-suppress TooManyArguments
+         */
         return self::getAffinity()->execute($address, $cmd);
     }
 

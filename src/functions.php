@@ -1,18 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector;
 
 use React\EventLoop\LoopInterface;
 use WyriHaximus\CpuCoreDetector\Core\Affinity\Taskset;
 use WyriHaximus\CpuCoreDetector\Core\AffinityCollection;
+use WyriHaximus\CpuCoreDetector\Core\AffinityCollectionInterface;
+use WyriHaximus\CpuCoreDetector\Core\AffinityInterface;
+use WyriHaximus\CpuCoreDetector\Core\CoreCollectionInterface;
 use WyriHaximus\CpuCoreDetector\Core\Count\Nproc;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
 use WyriHaximus\CpuCoreDetector\Detector\Hash;
 
-/**
- * @return Collections
- */
-function getDefaultCollections(LoopInterface $loop)
+function getDefaultCollections(LoopInterface $loop): Collections
 {
     return new Collections(
         getDefaultDetectors($loop),
@@ -21,10 +23,7 @@ function getDefaultCollections(LoopInterface $loop)
     );
 }
 
-/**
- * @return DetectorCollection
- */
-function getDefaultDetectors(LoopInterface $loop)
+function getDefaultDetectors(LoopInterface $loop): DetectorCollection
 {
     return new DetectorCollection([
         new Hash($loop),
@@ -32,9 +31,11 @@ function getDefaultDetectors(LoopInterface $loop)
 }
 
 /**
- * @return CountCollection
+ * @return CoreCollectionInterface<CoreInterface>
+ *
+ * @psalm-suppress TooManyTemplateParams
  */
-function getDefaultCounters(LoopInterface $loop)
+function getDefaultCounters(LoopInterface $loop): CoreCollectionInterface
 {
     return new CountCollection([
         new Nproc($loop),
@@ -42,9 +43,11 @@ function getDefaultCounters(LoopInterface $loop)
 }
 
 /**
- * @return AffinityCollection
+ * @return AffinityCollectionInterface<AffinityInterface>
+ *
+ * @psalm-suppress TooManyTemplateParams
  */
-function getDefaultAffinities(LoopInterface $loop)
+function getDefaultAffinities(LoopInterface $loop): AffinityCollectionInterface
 {
     return new AffinityCollection([
         new Taskset(),

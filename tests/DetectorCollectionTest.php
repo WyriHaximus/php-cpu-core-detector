@@ -1,17 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WyriHaximus\CpuCoreDetector\Tests;
 
-use ApiClients\Tools\TestUtilities\TestCase;
+use WyriHaximus\AsyncTestUtilities\AsyncTestCase;
 use WyriHaximus\CpuCoreDetector\Core\CountCollection;
 use WyriHaximus\CpuCoreDetector\Core\CountInterface;
 use WyriHaximus\CpuCoreDetector\DetectorCollection;
 use WyriHaximus\CpuCoreDetector\DetectorInterface;
 
-/**
- * @internal
- */
-final class DetectorCollectionTest extends TestCase
+use function React\Promise\resolve;
+
+final class DetectorCollectionTest extends AsyncTestCase
 {
     public function testDetectorCollection(): void
     {
@@ -26,12 +27,16 @@ final class DetectorCollectionTest extends TestCase
         $detectorUnSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(false);
         $detectorSupported = $this->prophesize(DetectorInterface::class);
         $detectorSupported->supportsCurrentOS()->shouldBeCalled()->willReturn(true);
-        $detectorSupported->execute('')->shouldBeCalled()->willReturn(1);
+        $detectorSupported->execute('')->shouldBeCalled()->willReturn(resolve(1));
 
-        $resolvedCounter = $this->await((new DetectorCollection([$detectorUnSupported->reveal(), $detectorSupported->reveal()]))->execute(
+        $promise         = (new DetectorCollection([
+            $detectorUnSupported->reveal(),
+            $detectorSupported->reveal(),
+        ]))->execute(
             new CountCollection([$counterUnSupported->reveal(), $counterSupported->reveal()])
-        ));
+        );
+        $resolvedCounter = $this->await($promise);
 
-        $this->assertSame($counterSupported->reveal(), $resolvedCounter);
+        self::assertSame($counterSupported->reveal(), $resolvedCounter);
     }
 }
