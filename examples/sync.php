@@ -9,7 +9,7 @@ $result = Detector::detect();
 echo $result, \PHP_EOL;
 
 for ($i = 0; $i < $result; $i++) {
-    Resolver::resolve($i, 'uptime')->then(function ($cmd): void {
+    Resolver::resolve((string)$i, 'uptime')->then(function ($cmd): void {
         echo $cmd, \PHP_EOL;
     });
 }
