@@ -8536,16 +8536,16 @@
         },
         {
             "name": "wyrihaximus/test-utilities",
-            "version": "3.6.5",
+            "version": "3.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-test-utilities.git",
-                "reference": "4352750fe5bd9135fecf85d7d515b5c148f84b8f"
+                "reference": "efeecbd3ce988ad2bd03cede6891f56a5a2d02c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-test-utilities/zipball/4352750fe5bd9135fecf85d7d515b5c148f84b8f",
-                "reference": "4352750fe5bd9135fecf85d7d515b5c148f84b8f",
+                "url": "https://api.github.com/repos/WyriHaximus/php-test-utilities/zipball/efeecbd3ce988ad2bd03cede6891f56a5a2d02c9",
+                "reference": "efeecbd3ce988ad2bd03cede6891f56a5a2d02c9",
                 "shasum": ""
             },
             "require": {
@@ -8563,7 +8563,7 @@
                 "phpspec/prophecy": "^1.12.2",
                 "phpspec/prophecy-phpunit": "^2.0.1",
                 "phpstan/phpstan": "^0.12.82",
-                "phpunit/phpunit": "^9.5.3",
+                "phpunit/phpunit": "^9.5.4",
                 "psalm/plugin-phpunit": "^0.15.1",
                 "roave/backward-compatibility-check": "^5.0.0",
                 "roave/infection-static-analysis-plugin": "^1.7.1",
@@ -8618,7 +8618,7 @@
             "description": "🛠️ Test utilities for api-clients packages",
             "support": {
                 "issues": "https://github.com/WyriHaximus/php-test-utilities/issues",
-                "source": "https://github.com/WyriHaximus/php-test-utilities/tree/3.6.5"
+                "source": "https://github.com/WyriHaximus/php-test-utilities/tree/3.6.6"
             },
             "funding": [
                 {
@@ -8626,7 +8626,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-22T22:53:14+00:00"
+            "time": "2021-03-23T17:51:39+00:00"
         }
     ],
     "aliases": [],
